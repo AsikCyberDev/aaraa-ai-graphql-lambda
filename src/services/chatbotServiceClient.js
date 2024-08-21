@@ -67,30 +67,33 @@ module.exports.createChatbot = async (chatbot) => {
   }
 };
 
-module.exports.updateChatbot = async (id, projectId, chatbot) => {  // Adjusted to require projectId
+module.exports.updateChatbotFields = async (id, projectId, fields) => {
   try {
     const updateExpressions = [];
     const expressionAttributeNames = {};
     const expressionAttributeValues = {};
 
-    for (const [key, value] of Object.entries(chatbot)) {
-      if (value !== undefined) {
+    for (const [key, value] of Object.entries(fields)) {
+      if (value !== undefined && key !== 'projectId') {
         updateExpressions.push(`#${key} = :${key}`);
         expressionAttributeNames[`#${key}`] = key;
         expressionAttributeValues[`:${key}`] = value;
       }
     }
 
+    if (updateExpressions.length === 0) {
+      throw new Error('No valid fields provided for update');
+    }
+
     const params = {
       TableName: TABLE_NAME,
-      Key: { id, projectId },  // Both keys are now required
+      Key: { id, projectId },
       UpdateExpression: `set ${updateExpressions.join(', ')}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
       ReturnValues: 'ALL_NEW',
     };
 
-    logger.info(`Updating chatbot in DynamoDB with ID ${id} and projectId ${projectId}`, { updateParams: params });
     const data = await ddbDocClient.send(new UpdateCommand(params));
     return data.Attributes;
   } catch (error) {
@@ -98,6 +101,7 @@ module.exports.updateChatbot = async (id, projectId, chatbot) => {  // Adjusted 
     throw new Error('Failed to update chatbot');
   }
 };
+
 
 module.exports.deleteChatbot = async (id, projectId) => {  // Adjusted to require projectId
   try {

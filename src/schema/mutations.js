@@ -3,7 +3,7 @@ const { gql } = require('apollo-server-lambda');
 module.exports = gql`
   type Mutation {
     createChatbot(input: CreateChatbotInput!): Chatbot!
-    updateChatbot(id: ID!, projectId: ID!, input: CreateChatbotInput!): Chatbot!
+    updateChatbot(id: ID!, projectId: ID!, input: UpdateChatbotInput!): Chatbot!
     deleteChatbot(id: ID!, projectId: ID!): Boolean!
 
     createDocument(input: CreateDocumentInput!): Document!
