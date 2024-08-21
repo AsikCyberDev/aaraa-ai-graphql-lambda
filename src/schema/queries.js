@@ -3,7 +3,7 @@ const { gql } = require('apollo-server-lambda');
 module.exports = gql`
   type Query {
     chatbots: [Chatbot!]!
-    chatbot(id: ID!, projectId: ID!): Chatbot  // Adjusted to require projectId
+    chatbot(id: ID!, projectId: ID!): Chatbot
     user(id: ID!): User
     documentsByProject(projectId: ID!): [Document!]!
     documentsByChatbot(chatbotId: ID!): [Document!]!
