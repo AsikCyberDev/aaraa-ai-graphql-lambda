@@ -29,6 +29,7 @@ const CreateProjectInput = require('./inputs/CreateProjectInput');
 const UpdateProjectInput = require('./inputs/UpdateProjectInput');
 const CreateDocumentInput = require('./inputs/CreateDocumentInput');
 const CreateApiKeyInput = require('./inputs/CreateApiKeyInput');
+const UpdateChatbotInput = require('./inputs/UpdateChatbotInput');
 
 // Queries and Mutations
 const Query = require('./queries');
@@ -61,6 +62,7 @@ const typeDefs = gql`
   ${UpdateProjectInput}
   ${CreateDocumentInput}
   ${CreateApiKeyInput}
+  ${UpdateChatbotInput}
 
   ${Query}
   ${Mutation}
