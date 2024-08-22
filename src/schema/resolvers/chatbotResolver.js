@@ -6,7 +6,7 @@ const {
   deleteChatbot,
 } = require('../../services/chatbotServiceClient');
 
-const logger = require('../../utils/logger'); // Import the logger
+const logger = require('../../utils/logger');
 
 const chatbotResolvers = {
   Query: {
@@ -19,7 +19,7 @@ const chatbotResolvers = {
         throw new Error('Failed to fetch chatbots');
       }
     },
-    chatbot: async (_, { id, projectId }) => {  // Adjusted to require projectId
+    chatbot: async (_, { id, projectId }) => {
       try {
         logger.info(`Fetching chatbot with ID ${id} and projectId ${projectId}`);
         return await getChatbotById(id, projectId);
@@ -39,28 +39,24 @@ const chatbotResolvers = {
         throw new Error('Failed to create chatbot');
       }
     },
-    Mutation: {
-      updateChatbot: async (_, { id, projectId, input }) => {
-        try {
-          logger.info(`Updating chatbot with ID ${id} and projectId ${projectId}`, { input });
+    updateChatbot: async (_, { id, projectId, input }) => {  // Ensure no duplicate Mutation object
+      try {
+        logger.info(`Updating chatbot with ID ${id} and projectId ${projectId}`, { input });
 
-          // Fetch the existing chatbot
-          const existingChatbot = await getChatbotByIdAndProject(id, projectId);
-          if (!existingChatbot) {
-            throw new Error(`Chatbot with ID ${id} and projectId ${projectId} not found`);
-          }
-
-          // Update only the provided fields
-          const updatedChatbot = await updateChatbotFields(id, projectId, input);
-
-          return updatedChatbot;
-        } catch (error) {
-          logger.error(`Error updating chatbot with ID ${id} and projectId ${projectId}: ${error.message}`, { stack: error.stack });
-          throw new Error('Failed to update chatbot');
+        const existingChatbot = await getChatbotById(id, projectId);
+        if (!existingChatbot) {
+          throw new Error(`Chatbot with ID ${id} and projectId ${projectId} not found`);
         }
-      },
+
+        const updatedChatbot = await updateChatbot(id, projectId, input);
+
+        return updatedChatbot;
+      } catch (error) {
+        logger.error(`Error updating chatbot with ID ${id} and projectId ${projectId}: ${error.message}`, { stack: error.stack });
+        throw new Error('Failed to update chatbot');
+      }
     },
-    deleteChatbot: async (_, { id, projectId }) => {  // Adjusted to require projectId
+    deleteChatbot: async (_, { id, projectId }) => {
       try {
         logger.info(`Deleting chatbot with ID ${id} and projectId ${projectId}`);
         return await deleteChatbot(id, projectId);

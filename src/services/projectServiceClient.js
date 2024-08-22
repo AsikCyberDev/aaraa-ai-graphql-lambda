@@ -17,10 +17,10 @@ module.exports.getProjectsByUserId = async (userId) => {
     return data.Items;
 };
 
-module.exports.getProjectById = async (id) => {
+module.exports.getProjectById = async (id, userId) => {
     const params = {
         TableName: TABLE_NAME,
-        Key: { id },
+        Key: { id, userId },
     };
     const data = await ddbDocClient.send(new GetCommand(params));
     return data.Item;
@@ -41,7 +41,7 @@ module.exports.createProject = async (project) => {
     return newProject;
 };
 
-module.exports.updateProject = async (id, project) => {
+module.exports.updateProject = async (id,userId, project) => {
     const updateExpressions = [];
     const expressionAttributeNames = {};
     const expressionAttributeValues = {};
@@ -56,7 +56,7 @@ module.exports.updateProject = async (id, project) => {
 
     const params = {
         TableName: TABLE_NAME,
-        Key: { id },
+        Key: { id, userId },
         UpdateExpression: `set ${updateExpressions.join(', ')}`,
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
@@ -67,10 +67,10 @@ module.exports.updateProject = async (id, project) => {
     return data.Attributes;
 };
 
-module.exports.deleteProject = async (id) => {
+module.exports.deleteProject = async (id, userId) => {
     const params = {
         TableName: TABLE_NAME,
-        Key: { id },
+        Key: { id, userId },
     };
     await ddbDocClient.send(new DeleteCommand(params));
     return true;

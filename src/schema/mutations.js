@@ -21,7 +21,7 @@ module.exports = gql`
     signIn(input: SignInInput!): User!
 
     createProject(input: CreateProjectInput!): Project!
-    updateProject(id: ID!, input: CreateProjectInput!): Project!
-    deleteProject(id: ID!): Boolean!
+    updateProject(id: ID!,userId: ID!, input: UpdateProjectInput!): Project!
+    deleteProject(id: ID!, userId: ID!): Boolean!
   }
 `;

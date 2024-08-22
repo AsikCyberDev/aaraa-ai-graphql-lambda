@@ -5,6 +5,8 @@ const resolvers = require('./schema/resolvers');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  playground: true,
+  introspection: true,
   context: ({ event, context }) => ({
     headers: event.headers,
     functionName: context.functionName,

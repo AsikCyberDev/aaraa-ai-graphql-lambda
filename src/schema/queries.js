@@ -9,6 +9,6 @@ module.exports = gql`
     documentsByChatbot(chatbotId: ID!): [Document!]!
     document(id: ID!, projectId: ID!): Document
     projects(userId: ID!): [Project!]!
-    project(id: ID!): Project
+    project(id: ID!, userId: ID!): Project
   }
 `;

@@ -67,7 +67,7 @@ module.exports.createChatbot = async (chatbot) => {
   }
 };
 
-module.exports.updateChatbotFields = async (id, projectId, fields) => {
+module.exports.updateChatbot = async (id, projectId, fields) => {
   try {
     const updateExpressions = [];
     const expressionAttributeNames = {};

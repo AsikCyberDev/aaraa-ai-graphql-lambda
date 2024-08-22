@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server-lambda');
 
-module.exports = gql`input UpdateChatbotInput {
+module.exports = gql`
+input UpdateChatbotInput {
     name: String
     description: String
     status: ChatbotStatus

@@ -9,17 +9,17 @@ const {
 const projectResolvers = {
     Query: {
         projects: async (_, { userId }) => await getProjectsByUserId(userId),
-        project: async (_, { id }) => await getProjectById(id),
+        project: async (_, { id, userId }) => await getProjectById(id, userId),
     },
     Mutation: {
         createProject: async (_, { input }) => {
             return await createProject(input);
         },
-        updateProject: async (_, { id, input }) => {
-            return await updateProject(id, input);
+        updateProject: async (_, { id, userId, input }) => {
+            return await updateProject(id, userId, input);
         },
-        deleteProject: async (_, { id }) => {
-            return await deleteProject(id);
+        deleteProject: async (_, { id, userId }) => {
+            return await deleteProject(id, userId);
         },
     },
 };
