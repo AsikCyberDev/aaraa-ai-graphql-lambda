@@ -83,6 +83,20 @@ module.exports.findUserByEmail = async (email) => {
     return data.Items[0];
 };
 
+module.exports.findUserBySocialId = async (socialId, socialProvider) => {
+    const params = {
+        TableName: TABLE_NAME,
+        IndexName: 'SocialLoginIndex',
+        KeyConditionExpression: 'socialProvider = :provider and socialId = :id',
+        ExpressionAttributeValues: {
+            ':provider': socialProvider,
+            ':id': socialId,
+        },
+    };
+    const data = await ddbDocClient.send(new QueryCommand(params));
+    return data.Items[0];
+};
+
 module.exports.validatePassword = async (inputPassword, storedPassword) => {
     return await bcrypt.compare(inputPassword, storedPassword);
 };

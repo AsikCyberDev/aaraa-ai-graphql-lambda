@@ -14,6 +14,9 @@ module.exports = gql`
     updateUser(id: ID!, input: UpdateUserInput!): User!
     deleteUser(id: ID!): Boolean!
 
+    googleSignUp(input: GoogleSignUpInput!): User!
+    googleSignIn(input: GoogleSignInInput!): User!
+
     generateApiKey(input: CreateApiKeyInput!): ApiKey!
     revokeApiKey(chatbotId: ID!, apiKeyId: ID!): Boolean!
 
