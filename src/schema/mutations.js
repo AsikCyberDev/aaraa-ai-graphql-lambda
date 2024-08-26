@@ -6,9 +6,9 @@ module.exports = gql`
     updateChatbot(id: ID!, projectId: ID!, input: UpdateChatbotInput!): Chatbot!
     deleteChatbot(id: ID!, projectId: ID!): Boolean!
 
-    createDocument(input: CreateDocumentInput!): Document!
-    updateDocument(id: ID!, name: String): Document!
-    deleteDocument(id: ID!): Boolean!
+    createDocument(input: CreateDocumentInput!): DocumentUploadResponse!
+    updateDocument(id: ID!, projectId: ID!, name: String!): Document!
+    deleteDocument(id: ID!, projectId: ID!): Boolean!
 
     createUser(input: CreateUserInput!): User!
     updateUser(id: ID!, input: UpdateUserInput!): User!

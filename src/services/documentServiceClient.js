@@ -1,5 +1,5 @@
+const { DynamoDBDocumentClient, PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, QueryCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 const { v4: uuidv4 } = require('uuid');
 const logger = require('../utils/logger');
 
@@ -7,12 +7,13 @@ const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
 const TABLE_NAME = process.env.DOCUMENT_TABLE_NAME;
-const CHATBOT_INDEX_NAME = 'ChatbotIndex';
+const CHATBOT_INDEX_NAME = 'ChatbotIndexV2';  // Make sure this matches your new GSI name
 
-module.exports.getDocumentsByProject = async (projectId) => {
+const getDocumentsByProject = async (projectId) => {
   try {
     const params = {
       TableName: TABLE_NAME,
+      IndexName: 'ProjectIndex', // You'll need to create this GSI
       KeyConditionExpression: 'projectId = :projectId',
       ExpressionAttributeValues: { ':projectId': projectId },
     };
@@ -25,7 +26,7 @@ module.exports.getDocumentsByProject = async (projectId) => {
   }
 };
 
-module.exports.getDocumentsByChatbot = async (chatbotId) => {
+const getDocumentsByChatbot = async (chatbotId) => {
   try {
     const params = {
       TableName: TABLE_NAME,
@@ -42,7 +43,7 @@ module.exports.getDocumentsByChatbot = async (chatbotId) => {
   }
 };
 
-module.exports.getDocumentById = async (id, projectId) => {
+const getDocumentById = async (id, projectId) => {
   try {
     const params = {
       TableName: TABLE_NAME,
@@ -57,29 +58,22 @@ module.exports.getDocumentById = async (id, projectId) => {
   }
 };
 
-module.exports.createDocument = async (document) => {
+const createDocument = async (document) => {
   try {
-    const id = uuidv4();
-    const newDocument = {
-      id,
-      projectId: document.projectId,
-      ...document,
-      uploadDate: new Date().toISOString(),
-    };
     const params = {
       TableName: TABLE_NAME,
-      Item: newDocument,
+      Item: document,
     };
     logger.info('DynamoDB Put Params (Create Document):', params);
     await ddbDocClient.send(new PutCommand(params));
-    return newDocument;
+    return document;
   } catch (error) {
     logger.error(`Error creating document: ${error.message}`, { stack: error.stack, document });
     throw new Error('Failed to create document');
   }
 };
 
-module.exports.updateDocument = async (id, projectId, document) => {
+const updateDocument = async (id, projectId, document) => {
   try {
     const params = {
       TableName: TABLE_NAME,
@@ -102,7 +96,7 @@ module.exports.updateDocument = async (id, projectId, document) => {
   }
 };
 
-module.exports.deleteDocument = async (id, projectId) => {
+const deleteDocument = async (id, projectId) => {
   try {
     const params = {
       TableName: TABLE_NAME,
@@ -115,4 +109,13 @@ module.exports.deleteDocument = async (id, projectId) => {
     logger.error(`Error deleting document with ID ${id} and projectId ${projectId}: ${error.message}`, { stack: error.stack });
     throw new Error('Failed to delete document');
   }
+};
+
+module.exports = {
+  getDocumentsByProject,
+  getDocumentsByChatbot,
+  getDocumentById,
+  createDocument,
+  updateDocument,
+  deleteDocument,
 };
