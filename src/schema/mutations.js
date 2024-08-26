@@ -9,6 +9,7 @@ module.exports = gql`
     createDocument(input: CreateDocumentInput!): DocumentUploadResponse!
     updateDocument(id: ID!, projectId: ID!, name: String!): Document!
     deleteDocument(id: ID!, projectId: ID!): Boolean!
+    getDownloadUrl(input: GetDownloadUrlInput!): DownloadUrlResponse!
 
     createUser(input: CreateUserInput!): User!
     updateUser(id: ID!, input: UpdateUserInput!): User!

@@ -33,6 +33,8 @@ const UpdateChatbotInput = require('./inputs/UpdateChatbotInput');
 const GoogleSignInInput = require('./inputs/GoogleSignInInput');
 const GoogleSignUpInput = require('./inputs/GoogleSignUpInput');
 const DocumentUploadResponse = require('./types/DocumentUploadResponse');
+const DownloadUrlResponse = require('./types/DownloadUrlResponse');
+const GetDownloadUrlInput = require('./inputs/GetDownloadUrlInput');
 
 // Queries and Mutations
 const Query = require('./queries');
@@ -68,7 +70,9 @@ const typeDefs = gql`
   ${CreateDocumentInput}
   ${CreateApiKeyInput}
   ${UpdateChatbotInput}
+  ${GetDownloadUrlInput}
   ${DocumentUploadResponse}
+  ${DownloadUrlResponse}
 
   ${Query}
   ${Mutation}
