@@ -4,5 +4,6 @@ module.exports = gql`
   enum ChatbotType {
     SUPPORT
     SALES
+    BEDROCK_AGENT
   }
 `;
